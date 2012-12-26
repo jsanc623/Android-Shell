@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;com.jsanc623.shabo.shell.MainActivity&apos;" deleteContents="false" description="Delete resource &apos;com.jsanc623.shabo.shell.MainActivity&apos;" element1="/com.jsanc623.shabo.shell.MainActivity" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1351751689226"/>&#x0A;<refactoring comment="Delete resource &apos;Shell/res/drawable&apos;" deleteContents="false" description="Delete resource &apos;Shell/res/drawable&apos;" element1="/Shell/res/drawable" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1351986797179"/>
+</session>

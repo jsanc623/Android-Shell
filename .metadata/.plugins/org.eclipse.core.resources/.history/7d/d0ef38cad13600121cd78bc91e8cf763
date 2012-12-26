@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+<Button
+    android:id="@+id/take_picture"   style="@style/buttonStyle"
+    android:drawableLeft="@drawable/pictures"   android:text="@string/take_picture" />
+
+<!--<Button
+    android:id="@+id/screen_capture"   style="@style/buttonStyle"
+    android:layout_below="@+id/take_picture"   android:drawableLeft="@drawable/capture"
+    android:text="@string/screen_capture" />-->
+
+<Button
+    android:id="@+id/my_files"   style="@style/buttonStyle"
+    android:layout_below="@+id/pictures"   android:drawableLeft="@drawable/files"
+    android:text="@string/my_files" />
+
+<Button
+    android:id="@+id/app_lock"   style="@style/buttonStyle"
+    android:layout_below="@+id/my_files"   android:drawableLeft="@drawable/lock"
+    android:text="@string/app_lock" />
+
+<Button
+    android:id="@+id/app_sound"   style="@style/buttonStyle"
+    android:layout_below="@+id/app_lock"   android:drawableLeft="@drawable/sound"
+    android:text="@string/app_sound" />
+
+<Button
+    android:id="@+id/app_paint"   style="@style/buttonStyle"
+    android:layout_below="@+id/app_sound"   android:drawableLeft="@drawable/paint"
+    android:text="@string/app_paint" />
+
+</RelativeLayout>

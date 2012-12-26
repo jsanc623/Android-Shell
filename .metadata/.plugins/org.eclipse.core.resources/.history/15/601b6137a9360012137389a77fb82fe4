@@ -1,0 +1,61 @@
+package com.jsanc623.shabo.shell;
+
+
+
+
+/*
+To get al installed apps you can use Package Manager..
+
+    List<PackageInfo> apps = getPackageManager().getInstalledPackages(0);
+To run you can use package name
+
+Intent LaunchApp = getPackageManager().getLaunchIntentForPackage(“package name”)
+startActivity( LaunchApp );
+For more detail you can read this blog 
+http://blog.wisecells.com/2012/05/30/get-list-of-all-installed-apps-android/
+*/
+
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
+
+public class MenuActivity extends Activity {
+    private static final int CAMERA_REQUEST = 1337;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_menu);
+        
+
+        Button take_picture = (Button) findViewById(R.id.take_picture);
+        take_picture.setOnClickListener(onClickListener);
+    }
+    
+    
+	public OnClickListener onClickListener = new OnClickListener() {
+	    public void onClick(final View v) {
+	             switch(v.getId()){
+	                 case R.id.take_picture: {
+	                	 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
+	                     startActivityForResult(cameraIntent, CAMERA_REQUEST); 
+	                 }
+	                // case R.id.button2:
+	                      //DO something
+	                 break;
+	              }
+
+	    }
+	};
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
+}
