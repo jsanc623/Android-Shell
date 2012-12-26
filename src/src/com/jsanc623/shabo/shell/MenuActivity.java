@@ -19,6 +19,7 @@ http://blog.wisecells.com/2012/05/30/get-list-of-all-installed-apps-android/
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -40,6 +41,26 @@ public class MenuActivity extends Activity {
         // Assign the take picture button an action (open camera, get picture return)
         Button take_picture = (Button) findViewById(R.id.take_picture);
         take_picture.setOnClickListener(onClickListener);
+        
+        // 
+        Button screen_capture = (Button) findViewById(R.id.screen_capture);
+        screen_capture.setOnClickListener(onClickListener);
+        
+        // 
+        Button my_files = (Button) findViewById(R.id.my_files);
+        my_files.setOnClickListener(onClickListener);
+        
+        // 
+        Button app_lock = (Button) findViewById(R.id.app_lock);
+        app_lock.setOnClickListener(onClickListener);
+        
+        // 
+        Button app_sound = (Button) findViewById(R.id.app_sound);
+        app_sound.setOnClickListener(onClickListener);
+        
+        // 
+        Button app_paint = (Button) findViewById(R.id.app_paint);
+        app_paint.setOnClickListener(onClickListener);
     }
     
     
@@ -50,7 +71,26 @@ public class MenuActivity extends Activity {
 	                	 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
 	                     startActivityForResult(cameraIntent, CAMERA_REQUEST); 
 	                 }
-	                // case R.id.button2:
+	                 case R.id.screen_capture: {
+	                	 @SuppressWarnings("unused")
+	                	 Bitmap bitmap;
+	                	 View v1 = v.getRootView();
+	                	 v1.setDrawingCacheEnabled(true);
+	                	 bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+	                	 v1.setDrawingCacheEnabled(false);
+	                 }
+	                 case R.id.my_files: {
+	                	 // implements: http://code.google.com/p/android-file-dialog/
+	                 }
+	                 case R.id.app_lock: {
+	                	 
+	                 }
+	                 case R.id.app_sound: {
+	                	 // implements: http://code.google.com/p/android-file-dialog/
+	                 }
+	                 case R.id.app_paint: {
+	                	 
+	                 }
 	                      //DO something
 	                 break;
 	              }
@@ -80,6 +120,7 @@ public class MenuActivity extends Activity {
 
 			long imageId = 0l;
 			long thumbnailImageId = 0l;
+			@SuppressWarnings("unused")
 			String thumbnailPath = "";
 
 			try{
@@ -99,6 +140,7 @@ public class MenuActivity extends Activity {
 			String largeFileSort = MediaStore.Images.ImageColumns._ID + " DESC";
 			myCursor = this.managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 
 					 					 largeFileProjection, null, null, largeFileSort);
+			@SuppressWarnings("unused")
 			String largeImagePath = "";
 
 			try{
@@ -111,8 +153,10 @@ public class MenuActivity extends Activity {
 			finally{ myCursor.close(); }
 
 			// These are the two URI's you'll be interested in. They give you a handle to the actual images
+			@SuppressWarnings("unused")
 			Uri uriLargeImage = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 
 												     String.valueOf(imageId));
+			@SuppressWarnings("unused")
 			Uri uriThumbnailImage = Uri.withAppendedPath(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, 
 					                                 String.valueOf(thumbnailImageId));
 		}
