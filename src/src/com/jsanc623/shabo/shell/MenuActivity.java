@@ -17,10 +17,12 @@ http://blog.wisecells.com/2012/05/30/get-list-of-all-installed-apps-android/
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Menu;
@@ -72,12 +74,19 @@ public class MenuActivity extends Activity {
 	                     startActivityForResult(cameraIntent, CAMERA_REQUEST); 
 	                 }
 	                 case R.id.screen_capture: {
-	                	 @SuppressWarnings("unused")
-	                	 Bitmap bitmap;
-	                	 View v1 = v.getRootView();
-	                	 v1.setDrawingCacheEnabled(true);
-	                	 bitmap = Bitmap.createBitmap(v1.getDrawingCache());
-	                	 v1.setDrawingCacheEnabled(false);
+	                	 if(Build.VERSION.SDK_INT >= 4.0){
+		                	 @SuppressWarnings("unused")
+		                	 Bitmap bitmap;
+		                	 View v1 = v.getRootView();
+		                	 v1.setDrawingCacheEnabled(true);
+		                	 bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+		                	 v1.setDrawingCacheEnabled(false);
+	                	 } else {
+	                		 AlertDialog alertDialog = new AlertDialog.Builder(MenuActivity.this).create();
+	                		 alertDialog.setTitle("Function not supported.");
+	                		 alertDialog.setMessage("Sorry! It seems that your Android version does not support this feature.");
+	                		 alertDialog.show();
+	                	 }
 	                 }
 	                 case R.id.my_files: {
 	                	 // implements: http://code.google.com/p/android-file-dialog/
