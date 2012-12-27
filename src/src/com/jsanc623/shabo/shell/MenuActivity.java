@@ -81,7 +81,7 @@ public class MenuActivity extends Activity {
 	                     startActivityForResult(cameraIntent, CAMERA_REQUEST); 
 	                 }
 	                 case R.id.screen_capture: {
-	                	 if(Build.VERSION.RELEASE <= 4.0){
+	                	 if(Build.VERSION.SDK_INT <= 14){
 	                		 showDialog("Function supported", "Attempting to take a screenshot now.");
 		                	 Bitmap bitmap;
 		                	 View v1 = v.getRootView();
@@ -90,7 +90,7 @@ public class MenuActivity extends Activity {
 		                	 v1.setDrawingCacheEnabled(false);
 		                	 saveImage(bitmap);
 	                	 } else {
-	                		 showDialog("Function not supported", "This function requires Android 4.0 and up. Your version is " + Build.VERSION.RELEASE);
+	                		 showDialog("Function not supported", "This function requires Android 4.0 (SDK 14) and up. Your version is Android " + Build.VERSION.RELEASE + " (SDK " + Build.VERSION.SDK_INT + ")");
 	                	 }
 	                 }
 	                 case R.id.my_files: {
