@@ -16,6 +16,10 @@ http://blog.wisecells.com/2012/05/30/get-list-of-all-installed-apps-android/
 */
 
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Random;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -24,6 +28,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.View;
@@ -33,7 +38,8 @@ import android.widget.ImageView;
 
 public class MenuActivity extends Activity {
     private static final int CAMERA_REQUEST = 1337;
-    private ImageView imageView;
+    @SuppressWarnings("unused")
+	private ImageView imageView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,23 +50,23 @@ public class MenuActivity extends Activity {
         Button take_picture = (Button) findViewById(R.id.take_picture);
         take_picture.setOnClickListener(onClickListener);
         
-        // 
+        // Assign the screen capture button an action (take screen shot)
         Button screen_capture = (Button) findViewById(R.id.screen_capture);
         screen_capture.setOnClickListener(onClickListener);
         
-        // 
+        // Assign the my files button an action (open file manager, return file)
         Button my_files = (Button) findViewById(R.id.my_files);
         my_files.setOnClickListener(onClickListener);
         
-        // 
+        // Assign the app lock button an action (define password, save password)
         Button app_lock = (Button) findViewById(R.id.app_lock);
         app_lock.setOnClickListener(onClickListener);
         
-        // 
+        // Assign the app sound button an action (open file manager, return sound)
         Button app_sound = (Button) findViewById(R.id.app_sound);
         app_sound.setOnClickListener(onClickListener);
         
-        // 
+        // Assign the app paint button an action (send intent for paint program)
         Button app_paint = (Button) findViewById(R.id.app_paint);
         app_paint.setOnClickListener(onClickListener);
     }
@@ -75,17 +81,15 @@ public class MenuActivity extends Activity {
 	                 }
 	                 case R.id.screen_capture: {
 	                	 if(Build.VERSION.SDK_INT >= 4.0){
-		                	 @SuppressWarnings("unused")
+	                		 showDialog("Function supported", "Attempting to take a screenshot now.");
 		                	 Bitmap bitmap;
 		                	 View v1 = v.getRootView();
 		                	 v1.setDrawingCacheEnabled(true);
 		                	 bitmap = Bitmap.createBitmap(v1.getDrawingCache());
 		                	 v1.setDrawingCacheEnabled(false);
+		                	 saveImage(bitmap);
 	                	 } else {
-	                		 AlertDialog alertDialog = new AlertDialog.Builder(MenuActivity.this).create();
-	                		 alertDialog.setTitle("Function not supported.");
-	                		 alertDialog.setMessage("Sorry! It seems that your Android version does not support this feature.");
-	                		 alertDialog.show();
+	                		 showDialog("Function not supported", "Sorry! It seems that your Android version does not support this feature.");
 	                	 }
 	                 }
 	                 case R.id.my_files: {
@@ -106,6 +110,34 @@ public class MenuActivity extends Activity {
 
 	    }
 	};
+	
+	private void saveImage(Bitmap finalBitmap){
+		File baseDirectory = Environment.getExternalStorageDirectory();
+		File directory = new File(baseDirectory + "/Android/data/com.jsanc623.shabo.shell/screenshots/");
+		showDialog("In saveImage()", baseDirectory.toString());
+		directory.mkdirs();
+		Random generator = new Random();
+		int n = 10000;
+		n = generator.nextInt(n);
+		String fileName = "Screenshot-" + n + ".jpg";
+		File file = new File(directory, fileName);
+		if(file.exists()) file.delete();
+		try{
+			FileOutputStream out = new FileOutputStream(file);
+			finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+			out.flush();
+			out.close();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void showDialog(String title, String message){
+		 AlertDialog alertDialog = new AlertDialog.Builder(MenuActivity.this).create();
+		 alertDialog.setTitle(title);
+		 alertDialog.setMessage(message);
+		 alertDialog.show();
+	}
     
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
 	    if (requestCode == CAMERA_REQUEST){
