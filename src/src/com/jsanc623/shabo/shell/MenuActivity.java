@@ -1,8 +1,6 @@
 package com.jsanc623.shabo.shell;
 
 
-
-
 /*
 To get al installed apps you can use Package Manager..
 
@@ -104,10 +102,13 @@ public class MenuActivity extends Activity {
 	                 case R.id.app_lock: {
 	                 }
 	                 case R.id.my_files: {
+	                	 openFileDialog();
 	                 }
 	                 case R.id.app_sound: {
 	                 }
 	                 case R.id.app_paint: {
+	                 	Intent scribblerIntent = new Intent(MenuActivity.this, Scribbler.class);
+	                	MenuActivity.this.startActivity(scribblerIntent);
 	                 }
 	                 break;
 	              }
@@ -115,7 +116,6 @@ public class MenuActivity extends Activity {
 	    }
 	};
 	
-	@SuppressWarnings("unused")
 	private void openFileDialog(){
    	 	Intent intent = new Intent(getBaseContext(), FileDialog.class);
    	 	intent.putExtra(FileDialog.START_PATH, Environment.getExternalStorageDirectory().toString()+"/DCIM");
@@ -129,7 +129,7 @@ public class MenuActivity extends Activity {
      	startActivityForResult(intent, REQUEST_FILE);
 	}
 	
-	private void saveImage(Bitmap finalBitmap, String filepreFix){
+	public void saveImage(Bitmap finalBitmap, String filepreFix){
 		File baseDirectory = Environment.getExternalStorageDirectory();
 		File directory = new File(baseDirectory, "/" + MenuActivity.Folder + "/screenshots/");
 	    if (!directory.exists()) {

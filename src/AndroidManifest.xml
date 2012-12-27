@@ -24,18 +24,9 @@
         </activity>
         
         <activity android:name=".FileDialog" android:label="@string/title_file_dialog">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         
-        
-        <activity android:name=".Scribbler">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".Scribbler" android:label="@string/title_scribbler">
         </activity>
         
         <activity android:name=".MenuActivity" android:label="@string/title_activity_menu">

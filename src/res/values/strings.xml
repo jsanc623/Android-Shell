@@ -42,6 +42,9 @@
 	<string name="links_capture_icon">Artua [http://www.artua.com]</string>
 	<string name="links_lock_icon">Artua [http://www.artua.com]</string>
 	
+	<!--  activity_scribbler -->
+	<string name="title_scribbler">Shell Scribbler</string>
+	
 	<!--  activity_file_dialog -->
 	<string name="title_file_dialog">Shell File Picker</string>
     <string name="location">Location</string>
