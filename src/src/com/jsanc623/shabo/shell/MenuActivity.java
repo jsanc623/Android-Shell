@@ -39,6 +39,7 @@ import android.widget.ImageView;
 
 public class MenuActivity extends Activity {
     private static final int CAMERA_REQUEST = 1337;
+    private static final int REQUEST_FILE = 1338;
 	@SuppressWarnings("unused")
 	private static String lastImageSaved = "";
 	private static String Folder = "aaShaboShell";
@@ -101,13 +102,31 @@ public class MenuActivity extends Activity {
 	                	 }
 	                 }
 	                 case R.id.my_files: {
-	                	 // implements: http://code.google.com/p/android-file-dialog/
+	                	 Intent intent = new Intent(getBaseContext(), FileDialog.class);
+	                     intent.putExtra(FileDialog.START_PATH, Environment.getExternalStorageDirectory().toString());
+	                     
+	                     //can user select directories or not
+	                     intent.putExtra(FileDialog.CAN_SELECT_DIR, false);
+	                     
+	                     //alternatively you can set file filter
+	                     //intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "png" });
+	                     
+	                     startActivityForResult(intent, REQUEST_FILE);
 	                 }
 	                 case R.id.app_lock: {
 	                	 
 	                 }
 	                 case R.id.app_sound: {
-	                	 // implements: http://code.google.com/p/android-file-dialog/
+	                	 Intent intent = new Intent(getBaseContext(), FileDialog.class);
+	                     intent.putExtra(FileDialog.START_PATH, Environment.getExternalStorageDirectory().toString()+"/DCIM");
+	                     
+	                     //can user select directories or not
+	                     intent.putExtra(FileDialog.CAN_SELECT_DIR, false);
+	                     
+	                     //alternatively you can set file filter
+	                     intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "jpg", "png", "mp4" });
+	                     
+	                     startActivityForResult(intent, REQUEST_FILE);
 	                 }
 	                 case R.id.app_paint: {
 	                	 
@@ -162,66 +181,14 @@ public class MenuActivity extends Activity {
     
 	protected void onActivityResult(int requestCode, int resultCode, Intent data){
 	    if (requestCode == CAMERA_REQUEST){
-	    	// The columns we want
-	    	String[] projection = {
-    			 MediaStore.Images.Thumbnails._ID,
-    			 MediaStore.Images.Thumbnails.IMAGE_ID,
-    			 MediaStore.Images.Thumbnails.KIND,
-    			 MediaStore.Images.Thumbnails.DATA
-	    	};
-
-	    	// Select only mini's
-			String selection = MediaStore.Images.Thumbnails.KIND + "=" + 
-					 		   MediaStore.Images.Thumbnails.MINI_KIND;
-			String sort = MediaStore.Images.Thumbnails._ID + " DESC";
-
-    		// At the moment, this is a bit of a hack, as I'm returning ALL images, 
-			// and just taking the latest one.
-    	    Cursor myCursor = this.managedQuery(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, 
-    	   		 	 	   	 				    projection, selection, null, sort);
-
-			long imageId = 0l;
-			long thumbnailImageId = 0l;
-			@SuppressWarnings("unused")
-			String thumbnailPath = "";
-
-			try{
-				myCursor.moveToFirst();
-				imageId = myCursor.getLong(myCursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails.IMAGE_ID));
-				thumbnailImageId = myCursor.getLong(myCursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails._ID));
-				thumbnailPath = myCursor.getString(myCursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails.DATA));
-			}
-			finally{ myCursor.close(); }
-
-			// Create new Cursor to obtain the file Path for the large image
-			String[] largeFileProjection = {
-					 MediaStore.Images.ImageColumns._ID,
-					 MediaStore.Images.ImageColumns.DATA
-			};
-
-			String largeFileSort = MediaStore.Images.ImageColumns._ID + " DESC";
-			myCursor = this.managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 
-					 					 largeFileProjection, null, null, largeFileSort);
-			@SuppressWarnings("unused")
-			String largeImagePath = "";
-
-			try{
-		         myCursor.moveToFirst();
-
-		         // This will actually give you the file path location of the image.
-		         largeImagePath = myCursor.getString(myCursor.getColumnIndexOrThrow(
-		        		 								MediaStore.Images.ImageColumns.DATA));
-			}
-			finally{ myCursor.close(); }
-
-			// These are the two URI's you'll be interested in. They give you a handle to the actual images
-			@SuppressWarnings("unused")
-			Uri uriLargeImage = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 
-												     String.valueOf(imageId));
-			@SuppressWarnings("unused")
-			Uri uriThumbnailImage = Uri.withAppendedPath(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, 
-					                                 String.valueOf(thumbnailImageId));
 		}
+	    
+	    if (requestCode == REQUEST_FILE){
+	    	if (resultCode == Activity.RESULT_OK) {
+                @SuppressWarnings("unused")
+				String filePath = data.getStringExtra(FileDialog.RESULT_PATH);
+	    	}
+        }
 	}    
 	
     @Override
