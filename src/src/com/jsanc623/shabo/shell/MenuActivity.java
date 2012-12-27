@@ -81,7 +81,7 @@ public class MenuActivity extends Activity {
 	                     startActivityForResult(cameraIntent, CAMERA_REQUEST); 
 	                 }
 	                 case R.id.screen_capture: {
-	                	 if(Build.VERSION.SDK_INT <= 4.0){
+	                	 if(Build.VERSION.RELEASE <= 4.0){
 	                		 showDialog("Function supported", "Attempting to take a screenshot now.");
 		                	 Bitmap bitmap;
 		                	 View v1 = v.getRootView();
@@ -90,7 +90,7 @@ public class MenuActivity extends Activity {
 		                	 v1.setDrawingCacheEnabled(false);
 		                	 saveImage(bitmap);
 	                	 } else {
-	                		 showDialog("Function not supported", "This function requires Android 4.0 and up. Your version is " + Build.VERSION.SDK_INT);
+	                		 showDialog("Function not supported", "This function requires Android 4.0 and up. Your version is " + Build.VERSION.RELEASE);
 	                	 }
 	                 }
 	                 case R.id.my_files: {
@@ -113,7 +113,7 @@ public class MenuActivity extends Activity {
 	
 	private void saveImage(Bitmap finalBitmap){
 		File baseDirectory = Environment.getExternalStorageDirectory();
-		File directory = new File(baseDirectory, "/Android/data/com.jsanc623.shabo.shell/screenshots/");
+		File directory = new File(baseDirectory, "/aaShaboShell/screenshots/");
 	    if (!directory.exists()) {
 	        if (!directory.mkdirs()) {
 	        	Log.e("ShaboShell :: ", "Problem creating Screenshots folder, probably exists");
@@ -131,6 +131,7 @@ public class MenuActivity extends Activity {
 			finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
 			out.flush();
 			out.close();
+			showDialog("New file created!", "Your screenshot has been saved at: " + baseDirectory.toString() + "/aaShaboShell/screenshots/");
 		} catch (Exception e){
 			e.printStackTrace();
 		}
