@@ -113,7 +113,7 @@ public class MenuActivity extends Activity {
 	
 	private void saveImage(Bitmap finalBitmap){
 		File baseDirectory = Environment.getExternalStorageDirectory();
-		File directory = new File(baseDirectory + "/Android/data/com.jsanc623.shabo.shell/screenshots/");
+		File directory = new File(baseDirectory + "/.aacom.jsanc623.shabo.shell/screenshots/");
 		showDialog("In saveImage()", baseDirectory.toString());
 		directory.mkdirs();
 		Random generator = new Random();
