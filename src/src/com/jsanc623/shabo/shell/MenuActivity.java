@@ -30,6 +30,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -80,7 +81,7 @@ public class MenuActivity extends Activity {
 	                     startActivityForResult(cameraIntent, CAMERA_REQUEST); 
 	                 }
 	                 case R.id.screen_capture: {
-	                	 if(Build.VERSION.SDK_INT >= 4.0){
+	                	 if(Build.VERSION.SDK_INT <= 4.0){
 	                		 showDialog("Function supported", "Attempting to take a screenshot now.");
 		                	 Bitmap bitmap;
 		                	 View v1 = v.getRootView();
@@ -89,7 +90,7 @@ public class MenuActivity extends Activity {
 		                	 v1.setDrawingCacheEnabled(false);
 		                	 saveImage(bitmap);
 	                	 } else {
-	                		 showDialog("Function not supported", "Sorry! It seems that your Android version does not support this feature.");
+	                		 showDialog("Function not supported", "This function requires Android 4.0 and up. Your version is " + Build.VERSION.SDK_INT);
 	                	 }
 	                 }
 	                 case R.id.my_files: {
@@ -104,7 +105,6 @@ public class MenuActivity extends Activity {
 	                 case R.id.app_paint: {
 	                	 
 	                 }
-	                      //DO something
 	                 break;
 	              }
 
@@ -113,9 +113,13 @@ public class MenuActivity extends Activity {
 	
 	private void saveImage(Bitmap finalBitmap){
 		File baseDirectory = Environment.getExternalStorageDirectory();
-		File directory = new File(baseDirectory + "/.aacom.jsanc623.shabo.shell/screenshots/");
-		showDialog("In saveImage()", baseDirectory.toString());
-		directory.mkdirs();
+		File directory = new File(baseDirectory, "/Android/data/com.jsanc623.shabo.shell/screenshots/");
+	    if (!directory.exists()) {
+	        if (!directory.mkdirs()) {
+	        	Log.e("ShaboShell :: ", "Problem creating Screenshots folder, probably exists");
+	        }
+	    }
+		
 		Random generator = new Random();
 		int n = 10000;
 		n = generator.nextInt(n);
