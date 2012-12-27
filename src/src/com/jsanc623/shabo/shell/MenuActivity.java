@@ -23,13 +23,13 @@ import java.util.Random;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.database.Cursor;
+//import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
+//import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -101,41 +101,33 @@ public class MenuActivity extends Activity {
 	                		 showDialog("Function not supported", "This function requires Android 4.0 (SDK 14) and up. Your version is Android " + Build.VERSION.RELEASE + " (SDK " + Build.VERSION.SDK_INT + ")");
 	                	 }
 	                 }
-	                 case R.id.my_files: {
-	                	 Intent intent = new Intent(getBaseContext(), FileDialog.class);
-	                     intent.putExtra(FileDialog.START_PATH, Environment.getExternalStorageDirectory().toString());
-	                     
-	                     //can user select directories or not
-	                     intent.putExtra(FileDialog.CAN_SELECT_DIR, false);
-	                     
-	                     //alternatively you can set file filter
-	                     //intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "png" });
-	                     
-	                     startActivityForResult(intent, REQUEST_FILE);
-	                 }
 	                 case R.id.app_lock: {
-	                	 
+	                 }
+	                 case R.id.my_files: {
 	                 }
 	                 case R.id.app_sound: {
-	                	 Intent intent = new Intent(getBaseContext(), FileDialog.class);
-	                     intent.putExtra(FileDialog.START_PATH, Environment.getExternalStorageDirectory().toString()+"/DCIM");
-	                     
-	                     //can user select directories or not
-	                     intent.putExtra(FileDialog.CAN_SELECT_DIR, false);
-	                     
-	                     //alternatively you can set file filter
-	                     intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "jpg", "png", "mp4" });
-	                     
-	                     startActivityForResult(intent, REQUEST_FILE);
 	                 }
 	                 case R.id.app_paint: {
-	                	 
 	                 }
 	                 break;
 	              }
 
 	    }
 	};
+	
+	@SuppressWarnings("unused")
+	private void openFileDialog(){
+   	 	Intent intent = new Intent(getBaseContext(), FileDialog.class);
+   	 	intent.putExtra(FileDialog.START_PATH, Environment.getExternalStorageDirectory().toString()+"/DCIM");
+     
+     	//can user select directories or not
+     	intent.putExtra(FileDialog.CAN_SELECT_DIR, false);
+     
+     	//alternatively you can set file filter
+     	intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "mp3" });
+     
+     	startActivityForResult(intent, REQUEST_FILE);
+	}
 	
 	private void saveImage(Bitmap finalBitmap, String filepreFix){
 		File baseDirectory = Environment.getExternalStorageDirectory();
