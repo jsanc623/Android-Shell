@@ -39,6 +39,9 @@ import android.widget.ImageView;
 
 public class MenuActivity extends Activity {
     private static final int CAMERA_REQUEST = 1337;
+	@SuppressWarnings("unused")
+	private static String lastImageSaved = "";
+	private static String Folder = "aaShaboShell";
     @SuppressWarnings("unused")
 	private ImageView imageView;
 
@@ -77,18 +80,22 @@ public class MenuActivity extends Activity {
 	    public void onClick(final View v) {
 	             switch(v.getId()){
 	                 case R.id.take_picture: {
-	                	 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
-	                     startActivityForResult(cameraIntent, CAMERA_REQUEST); 
+	                	 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+	                	 String imageFileLoc = "/" + MenuActivity.Folder + "/photos/" + String.valueOf(System.currentTimeMillis()) + ".jpg";
+	                	 MenuActivity.lastImageSaved = Environment.getExternalStorageDirectory().toString() + imageFileLoc;
+	                     Uri mImageCaptureUri1 = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), imageFileLoc));
+	                     cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri1);                     
+	                     cameraIntent.putExtra("return-data", true);
+	                     startActivityForResult(cameraIntent, CAMERA_REQUEST);
 	                 }
 	                 case R.id.screen_capture: {
-	                	 if(Build.VERSION.SDK_INT <= 14){
-	                		 showDialog("Function supported", "Attempting to take a screenshot now.");
+	                	 if(Build.VERSION.SDK_INT >= 14){
 		                	 Bitmap bitmap;
 		                	 View v1 = v.getRootView();
 		                	 v1.setDrawingCacheEnabled(true);
 		                	 bitmap = Bitmap.createBitmap(v1.getDrawingCache());
 		                	 v1.setDrawingCacheEnabled(false);
-		                	 saveImage(bitmap);
+		                	 saveImage(bitmap, "Screenshot");
 	                	 } else {
 	                		 showDialog("Function not supported", "This function requires Android 4.0 (SDK 14) and up. Your version is Android " + Build.VERSION.RELEASE + " (SDK " + Build.VERSION.SDK_INT + ")");
 	                	 }
@@ -111,27 +118,28 @@ public class MenuActivity extends Activity {
 	    }
 	};
 	
-	private void saveImage(Bitmap finalBitmap){
+	private void saveImage(Bitmap finalBitmap, String filepreFix){
 		File baseDirectory = Environment.getExternalStorageDirectory();
-		File directory = new File(baseDirectory, "/aaShaboShell/screenshots/");
+		File directory = new File(baseDirectory, "/" + MenuActivity.Folder + "/screenshots/");
 	    if (!directory.exists()) {
 	        if (!directory.mkdirs()) {
 	        	Log.e("ShaboShell :: ", "Problem creating Screenshots folder, probably exists");
 	        }
 	    }
-		
+	    
 		Random generator = new Random();
 		int n = 10000;
 		n = generator.nextInt(n);
-		String fileName = "Screenshot-" + n + ".jpg";
+		String fileName = filepreFix + "-" + n + ".jpg";
 		File file = new File(directory, fileName);
+		MenuActivity.lastImageSaved = file.toString();
 		if(file.exists()) file.delete();
 		try{
 			FileOutputStream out = new FileOutputStream(file);
 			finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
 			out.flush();
 			out.close();
-			showDialog("New file created!", "Your screenshot has been saved at: " + baseDirectory.toString() + "/aaShaboShell/screenshots/");
+			showDialog("New file created!", "Your image has been saved at: " + baseDirectory.toString() + "/" + MenuActivity.Folder + "/screenshots/");
 		} catch (Exception e){
 			e.printStackTrace();
 		}
@@ -143,8 +151,16 @@ public class MenuActivity extends Activity {
 		 alertDialog.setMessage(message);
 		 alertDialog.show();
 	}
+	
+	public void showImage(String imageLocation){
+		Intent intent = new Intent();  
+		intent.setAction(Intent.ACTION_VIEW);  
+		Uri imgUri = Uri.parse("file://" + imageLocation);  
+		intent.setDataAndType(imgUri, "image/*");  
+		startActivity(intent);
+	}
     
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {  
+	protected void onActivityResult(int requestCode, int resultCode, Intent data){
 	    if (requestCode == CAMERA_REQUEST){
 	    	// The columns we want
 	    	String[] projection = {
