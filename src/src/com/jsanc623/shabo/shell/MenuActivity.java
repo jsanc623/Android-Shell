@@ -86,7 +86,7 @@ public class MenuActivity extends Activity {
 	                     cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri1);                     
 	                     cameraIntent.putExtra("return-data", true);
 	                     startActivityForResult(cameraIntent, CAMERA_REQUEST);
-	                 }
+	                 } break;
 	                 case R.id.screen_capture: {
 	                	 if(Build.VERSION.SDK_INT >= 14){
 		                	 Bitmap bitmap;
@@ -98,34 +98,40 @@ public class MenuActivity extends Activity {
 	                	 } else {
 	                		 showDialog("Function not supported", "This function requires Android 4.0 (SDK 14) and up. Your version is Android " + Build.VERSION.RELEASE + " (SDK " + Build.VERSION.SDK_INT + ")");
 	                	 }
-	                 }
-	                 case R.id.app_lock: {
-	                 }
+	                 } break;
 	                 case R.id.my_files: {
-	                	 openFileDialog();
-	                 }
+	                	 openFileDialog(false, false);
+	                 } break;
+	                 case R.id.app_lock: {
+	                 } break;
 	                 case R.id.app_sound: {
-	                 }
+	                	 openFileDialog(false, true);
+	                 } break;
 	                 case R.id.app_paint: {
 	                 	Intent scribblerIntent = new Intent(MenuActivity.this, Scribbler.class);
 	                	MenuActivity.this.startActivity(scribblerIntent);
-	                 }
-	                 break;
+	                 } break;
 	              }
 
 	    }
 	};
 	
-	private void openFileDialog(){
+	private void openFileDialog(Boolean canSelectDirectories, Boolean setOnlyMP3){
    	 	Intent intent = new Intent(getBaseContext(), FileDialog.class);
-   	 	intent.putExtra(FileDialog.START_PATH, Environment.getExternalStorageDirectory().toString()+"/DCIM");
+   	 	intent.putExtra(FileDialog.START_PATH, Environment.getExternalStorageDirectory().toString());
      
      	//can user select directories or not
-     	intent.putExtra(FileDialog.CAN_SELECT_DIR, false);
-     
+     	if(canSelectDirectories == true){
+   	 	    intent.putExtra(FileDialog.CAN_SELECT_DIR, true);
+     	} else {
+   	 	    intent.putExtra(FileDialog.CAN_SELECT_DIR, false);
+     	}
+     	
      	//alternatively you can set file filter
-     	intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "mp3" });
-     
+     	if(setOnlyMP3 == true){
+     	    intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "mp3" });
+     	}
+     	
      	startActivityForResult(intent, REQUEST_FILE);
 	}
 	
