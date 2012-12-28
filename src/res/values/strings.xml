@@ -29,6 +29,7 @@
     <string name="app_lock">App Lock</string>
     <string name="app_sound">App Sound</string>
     <string name="app_paint">App Paint</string>
+    <string name="app_faq">How Does Shell Work?</string>
     
     <!-- activity_appLock -->
     <string name="title_activity_appLock">appLockActivity</string>
@@ -55,7 +56,24 @@
     <string name="cancel">Cancel</string>
     <string name="create">Save</string>
     <string name="no_data">No Data</string>
-    <color name="gray">#ffff0000</color>
     <string name="err">Error</string>
+    
+    <!-- activity_faq -->
+    <string name="faq_text">
+        What is Shell\n
+        Shell lets you have greater control over your launch procedures. Shell acts the same way that
+        a regular Folder would - but it also extends that functionality by giving you, the user, control
+        over what sound is played when you open the folder, what the outside of the folder looks like, 
+        and what the contents of the folder are! You want files? Put it in the folder! You want apps? Put
+        it in the folder!\n\n
+        
+        How do I get started?\n
+        Simple! Place the Shell widget somewhere on your home screen. Then open this app again, and select a 
+        sound or song to play by tapping the "App Sound" button. It will automatically drop you into your Music 
+        folder. From there, you can choose a song, or browse elsewhere for different sounds. Then, tap the "App Lock"
+        button to select a password. You can also select "My Files" to choose what files you want easy access to from
+        within the Shell folder, as well as "My Apps" to select which applications you want to store within the Shell
+        folder.\n\n 
+    </string>
 
 </resources>
