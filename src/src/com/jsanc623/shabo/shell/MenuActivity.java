@@ -107,7 +107,7 @@ public class MenuActivity extends Activity {
 	                	 openFileDialog(false, false, "");
 	                 } break;
 	                 case R.id.app_lock: {
-	                	Intent lockIntent = new Intent(MenuActivity.this, Scribbler.class);
+	                	Intent lockIntent = new Intent(MenuActivity.this, LockActivity.class);
 	                	MenuActivity.this.startActivity(lockIntent);
 	                 } break;
 	                 case R.id.app_sound: {
