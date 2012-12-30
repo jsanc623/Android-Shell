@@ -72,6 +72,10 @@ public class MenuActivity extends Activity {
         // Assign the app paint button an action (send intent for paint program)
         Button app_paint = (Button) findViewById(R.id.app_paint);
         app_paint.setOnClickListener(onClickListener);
+        
+        // Assign the faq button an action (send intent for faq activity)
+        Button app_faq = (Button) findViewById(R.id.app_faq);
+        app_faq.setOnClickListener(onClickListener);
     }
     
     
@@ -100,25 +104,31 @@ public class MenuActivity extends Activity {
 	                	 }
 	                 } break;
 	                 case R.id.my_files: {
-	                	 openFileDialog(false, false);
+	                	 openFileDialog(false, false, "");
 	                 } break;
 	                 case R.id.app_lock: {
+	                	Intent lockIntent = new Intent(MenuActivity.this, LockActivity.class);
+	                	MenuActivity.this.startActivity(lockIntent);
 	                 } break;
 	                 case R.id.app_sound: {
-	                	 openFileDialog(false, true);
+	                	openFileDialog(false, true, "/Music");
 	                 } break;
 	                 case R.id.app_paint: {
 	                 	Intent scribblerIntent = new Intent(MenuActivity.this, Scribbler.class);
 	                	MenuActivity.this.startActivity(scribblerIntent);
+	                 } break;
+	                 case R.id.app_faq: {
+	                	Intent faqIntent = new Intent(MenuActivity.this, FAQActivity.class);
+	                	MenuActivity.this.startActivity(faqIntent);
 	                 } break;
 	              }
 
 	    }
 	};
 	
-	private void openFileDialog(Boolean canSelectDirectories, Boolean setOnlyMP3){
+	private void openFileDialog(Boolean canSelectDirectories, Boolean setOnlyMP3, String additionalPath){
    	 	Intent intent = new Intent(getBaseContext(), FileDialog.class);
-   	 	intent.putExtra(FileDialog.START_PATH, Environment.getExternalStorageDirectory().toString());
+   	 	intent.putExtra(FileDialog.START_PATH, Environment.getExternalStorageDirectory().toString() + additionalPath);
      
      	//can user select directories or not
      	if(canSelectDirectories == true){
