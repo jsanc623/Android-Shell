@@ -31,11 +31,13 @@
     <string name="app_paint">App Paint</string>
     <string name="app_faq">How Does Shell Work?</string>
     
-    <!-- activity_appLock -->
+    <!-- activity_lock -->
     <string name="title_activity_lock">Shell: Lock</string>
 	<string name="password_a">Password</string>
 	<string name="password_b">Repeat Password</string>
     <string name="set_button">Set Password</string>
+    <string name="toggle">Require Password</string>
+    <string name="btn_save">Button Save</string>
 	
 	<!-- activity_about -->
 	<string name="links">Created with help from:</string>
