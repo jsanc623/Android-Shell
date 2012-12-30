@@ -18,7 +18,7 @@ public class MainActivity extends Activity {
             	Intent myIntent = new Intent(MainActivity.this, MenuActivity.class);
             	MainActivity.this.startActivity(myIntent);
             }
-        }, 2000);
+        }, 800);
     }
 
     @Override

@@ -32,7 +32,7 @@
     <string name="app_faq">How Does Shell Work?</string>
     
     <!-- activity_appLock -->
-    <string name="title_activity_appLock">appLockActivity</string>
+    <string name="title_activity_lock">Shell: Lock</string>
 	<string name="password_a">Password</string>
 	<string name="password_b">Repeat Password</string>
     <string name="set_button">Set Password</string>
@@ -45,6 +45,9 @@
 	
 	<!--  activity_scribbler -->
 	<string name="title_scribbler">Shell Scribbler</string>
+	
+	<!--  activity_faq -->
+	<string name="title_activity_faq">Shell FAQ</string>
 	
 	<!--  activity_file_dialog -->
 	<string name="title_file_dialog">Shell File Picker</string>

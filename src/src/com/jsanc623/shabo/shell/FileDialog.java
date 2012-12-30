@@ -245,7 +245,6 @@ public class FileDialog extends ListActivity {
 			} else {
 				final String fileName = file.getName();
 				final String fileNameLwr = fileName.toLowerCase();
-				// se ha um filtro de formatos, utiliza-o
 				if (formatFilter != null) {
 					boolean contains = false;
 					for (int i = 0; i < formatFilter.length; i++) {
@@ -259,7 +258,6 @@ public class FileDialog extends ListActivity {
 						filesMap.put(fileName, fileName);
 						filesPathMap.put(fileName, file.getPath());
 					}
-					// senao, adiciona todos os arquivos
 				} else {
 					filesMap.put(fileName, fileName);
 					filesPathMap.put(fileName, file.getPath());
