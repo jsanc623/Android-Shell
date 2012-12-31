@@ -18,10 +18,9 @@ import android.util.Log;
 public class DataProvider extends ContentProvider {
 
     private static final String TAG = "NotePadProvider";
-
-    private static final String DATABASE_NAME = "note_pad.db";
+    private static final String DATABASE_NAME = "shabo_shell.db";
     private static final int DATABASE_VERSION = 2;
-    private static final String NOTES_TABLE_NAME = "notes";
+    private static final String SHABO_SHELL_TABLE_NAME = "notes";
     private static final int _ID = 0;
     private static final String TITLE = "";
     private static final String NOTE = "";
@@ -39,7 +38,7 @@ public class DataProvider extends ContentProvider {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            db.execSQL("CREATE TABLE " + NOTES_TABLE_NAME + " ("
+            db.execSQL("CREATE TABLE " + SHABO_SHELL_TABLE_NAME + " ("
                     + _ID + " INTEGER PRIMARY KEY,"
                     + TITLE + " TEXT,"
                     + NOTE + " TEXT,"
@@ -69,7 +68,7 @@ public class DataProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
             String sortOrder) {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(NOTES_TABLE_NAME);
+        qb.setTables(SHABO_SHELL_TABLE_NAME);
 
         // If no sort order is specified use the default
         String orderBy = sortOrder;
@@ -103,7 +102,7 @@ public class DataProvider extends ContentProvider {
         SQLiteDatabase db = mOpenHelper.getWritableDatabase();
        
         @SuppressWarnings("unused")
-		long rowId = db.insert(NOTES_TABLE_NAME, NOTE, values);
+		long rowId = db.insert(SHABO_SHELL_TABLE_NAME, NOTE, values);
 
         throw new SQLException("Failed to insert row into " + uri);
     }
