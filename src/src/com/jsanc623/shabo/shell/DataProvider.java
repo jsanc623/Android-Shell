@@ -1,127 +1,115 @@
 package com.jsanc623.shabo.shell;
 
-import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteQueryBuilder;
-import android.net.Uri;
 import android.util.Log;
 
-/**
- * Provides access to a database of notes. Each note has a title, the note
- * itself, a creation date and a modified data.
- */
-public class DataProvider extends ContentProvider {
+public class DataProvider {
+    public static final String  KEY_ROWID = "id";
+    public static final String  KEY_IMAGE = "image";
+    public static final String  KEY_PASSWORD = "password";
+    public static final String  KEY_REQUIRE_PASSWORD = "require_password";
+    public static final String  KEY_SOUND = "sound";
+    private static final String TAG = "DataProvider";
+    
+    private static final String DATABASE_NAME = "ShaboShellDB";
+    private static final String DATABASE_TABLE = "notes";
+    private static final int    DATABASE_VERSION = 2;
 
-    private static final String TAG = "NotePadProvider";
-    private static final String DATABASE_NAME = "shabo_shell.db";
-    private static final int DATABASE_VERSION = 2;
-    private static final String SHABO_SHELL_TABLE_NAME = "notes";
-    private static final int _ID = 0;
-    private static final String TITLE = "";
-    private static final String NOTE = "";
-    private static final int CREATED_DATE = 0;
-    private static final int MODIFIED_DATE = 0;
+    private static final String DATABASE_CREATE = "CREATE TABLE IF NOT EXISTS " + DATABASE_TABLE + " (" + 
+    		                                      KEY_ROWID            + " integer primary key autoincrement, " + 
+    		                                      KEY_IMAGE            + " VARCHAR not null, " + 
+    		                                      KEY_PASSWORD         + " VARCHAR, " + 
+    		                                      KEY_REQUIRE_PASSWORD + " VARCHAR, " + 
+    		                                      KEY_SOUND            + " VARCHAR );";
+        
+    private final Context context;
+    private DatabaseHelper DBHelper;
+    private SQLiteDatabase db;
 
-    /**
-     * This class helps open, create, and upgrade the database file.
-     */
-    private static class DatabaseHelper extends SQLiteOpenHelper {
-
-        DatabaseHelper(Context context) {
+    public DataProvider(Context ctx){
+        this.context = ctx;
+        DBHelper = new DatabaseHelper(context);
+    }
+        
+    private static class DatabaseHelper extends SQLiteOpenHelper{
+        DatabaseHelper(Context context){
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
         @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL("CREATE TABLE " + SHABO_SHELL_TABLE_NAME + " ("
-                    + _ID + " INTEGER PRIMARY KEY,"
-                    + TITLE + " TEXT,"
-                    + NOTE + " TEXT,"
-                    + CREATED_DATE + " INTEGER,"
-                    + MODIFIED_DATE + " INTEGER"
-                    + ");");
+        public void onCreate(SQLiteDatabase db){
+        	try {
+        		db.execSQL(DATABASE_CREATE);	
+        	} catch (SQLException e) {
+        		e.printStackTrace();
+        	}
         }
 
         @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
             Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
-            db.execSQL("DROP TABLE IF EXISTS notes");
+            db.execSQL("DROP TABLE IF EXISTS contacts");
             onCreate(db);
         }
+    }    
+
+    //---opens the database---
+    public DataProvider open() throws SQLException{
+        db = DBHelper.getWritableDatabase();
+        return this;
     }
 
-    private DatabaseHelper mOpenHelper;
-
-    @Override
-    public boolean onCreate() {
-        mOpenHelper = new DatabaseHelper(getContext());
-        return true;
+    //---closes the database---    
+    public void close(){
+        DBHelper.close();
+    }
+    
+    //---insert a record into the database---
+    public long insertRecord(String image, String password, String require_password, String sound){
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_IMAGE, image);
+        initialValues.put(KEY_PASSWORD, password);
+        initialValues.put(KEY_REQUIRE_PASSWORD, require_password);
+        initialValues.put(KEY_SOUND, sound);
+        return db.insert(DATABASE_TABLE, null, initialValues);
     }
 
-    @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
-            String sortOrder) {
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(SHABO_SHELL_TABLE_NAME);
-
-        // If no sort order is specified use the default
-        String orderBy = sortOrder;
-
-        // Get the database and run the query
-        SQLiteDatabase db = mOpenHelper.getReadableDatabase();
-        Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, orderBy);
-
-        // Tell the cursor what uri to watch, so it knows when its source data changes
-        c.setNotificationUri(getContext().getContentResolver(), uri);
-        return c;
+    //---deletes a particular record---
+    public boolean deleteContact(long rowId){
+        return db.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
     }
 
-    @Override
-    public String getType(Uri uri) {
-        return uri.toString();
+    //---retrieves all the records---
+    public Cursor getAllRecords(){
+        return db.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_IMAGE,
+                KEY_PASSWORD, KEY_REQUIRE_PASSWORD, KEY_SOUND}, null, null, null, null, null);
     }
 
-    @Override
-    public Uri insert(Uri uri, ContentValues initialValues) {
-        ContentValues values;
-        if (initialValues != null) {
-            values = new ContentValues(initialValues);
-        } else {
-            values = new ContentValues();
+    //---retrieves a particular record---
+    public Cursor getRecord(long rowId) throws SQLException{
+        Cursor mCursor =
+                db.query(true, DATABASE_TABLE, new String[] {KEY_ROWID,
+                KEY_IMAGE, KEY_PASSWORD, KEY_REQUIRE_PASSWORD, KEY_SOUND}, 
+                KEY_ROWID + "=" + rowId, null, null, null, null, null);
+        if (mCursor != null) {
+            mCursor.moveToFirst();
         }
-        
-        @SuppressWarnings("unused")
-		Long now = Long.valueOf(System.currentTimeMillis());
-
-        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-       
-        @SuppressWarnings("unused")
-		long rowId = db.insert(SHABO_SHELL_TABLE_NAME, NOTE, values);
-
-        throw new SQLException("Failed to insert row into " + uri);
+        return mCursor;
     }
 
-    @Override
-    public int delete(Uri uri, String where, String[] whereArgs) {
-        @SuppressWarnings("unused")
-		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        int count = 0;
-        getContext().getContentResolver().notifyChange(uri, null);
-        return count;
-    }
-
-    @Override
-    public int update(Uri uri, ContentValues values, String where, String[] whereArgs) {
-        @SuppressWarnings("unused")
-		SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        int count = 0;
-        getContext().getContentResolver().notifyChange(uri, null);
-        return count;
+    //---updates a record---
+    public boolean updateRecord(long rowId, String image, String password, String require_password, String sound){
+        ContentValues args = new ContentValues();
+        args.put(KEY_IMAGE, image);
+        args.put(KEY_PASSWORD, password);
+        args.put(KEY_REQUIRE_PASSWORD, require_password);
+        args.put(KEY_SOUND, sound);
+        return db.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
     }
 }
