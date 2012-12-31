@@ -40,14 +40,14 @@ public class LockActivity extends Activity {
 	  			password_b = (EditText)findViewById(R.id.password_b_input);
 	  			password_b_value = password_b.getText().toString();
 	   	   
-	  			if(password_a_value != password_b_value){
+	  			if(password_a_value.equals(password_b_value)){
+	  				//TODO: Save passwords to database and clear password_a_input and password_b_input
+	  				//TODO: Also, check 'state' and make it default based on state at present
+	  			} else {
 	  				AlertDialog alertDialog = new AlertDialog.Builder(LockActivity.this).create();
 	  				alertDialog.setTitle("Error!");
 	  				alertDialog.setMessage("Passwords do not match!");
 	  				alertDialog.show();
-	  			} else {
-	  				//TODO: Save passwords to database and clear password_a_input and password_b_input
-	  				//TODO: Also, check 'state' and make it default based on state at present
 	  			}
 	  		}
 	   
