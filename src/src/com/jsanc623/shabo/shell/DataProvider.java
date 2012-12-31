@@ -106,10 +106,10 @@ public class DataProvider {
     //---updates a record---
     public boolean updateRecord(long rowId, String image, String password, String require_password, String sound){
         ContentValues args = new ContentValues();
-        args.put(KEY_IMAGE, image);
-        args.put(KEY_PASSWORD, password);
-        args.put(KEY_REQUIRE_PASSWORD, require_password);
-        args.put(KEY_SOUND, sound);
+        if(!("").equals(image)){ args.put(KEY_IMAGE, image); } 
+        if(!("").equals(password)){ args.put(KEY_PASSWORD, password); } 
+        if(!("").equals(require_password)){ args.put(KEY_REQUIRE_PASSWORD, require_password); } 
+        if(!("").equals(sound)){ args.put(KEY_SOUND, sound); } 
         return db.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
     }
 }

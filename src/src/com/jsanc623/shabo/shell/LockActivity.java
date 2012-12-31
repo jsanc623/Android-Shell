@@ -1,10 +1,18 @@
 package com.jsanc623.shabo.shell;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,8 +49,28 @@ public class LockActivity extends Activity {
 	  			password_b_value = password_b.getText().toString();
 	   	   
 	  			if(password_a_value.equals(password_b_value)){
-	  				//TODO: Save passwords to database and clear password_a_input and password_b_input
-	  				//TODO: Also, check 'state' and make it default based on state at present
+	  				try{
+	  				    String destPath = "/data/data/" + getPackageName() + "/databases/DB";
+	  				    File f = new File(destPath);
+	  				    if(!f.exists()){
+	  				        CopyDB(getBaseContext().getAssets().open("mydb"), new FileOutputStream(destPath));
+	  				    }
+	  				} catch (FileNotFoundException e){
+	  				    e.printStackTrace();
+	  				} catch (IOException e){
+	  				    e.printStackTrace();
+	  				}
+	  				
+	  				// Create DB object
+	  				DataProvider db = new DataProvider(LockActivity.this);
+	  				
+	  				// Update password
+	  		        db.open();
+	  		        if (db.updateRecord(1, "", password_a_value, "yes", ""))
+	  		            Toast.makeText(LockActivity.this, "Password Update Successful.", Toast.LENGTH_LONG).show();
+	  		        else
+	  		            Toast.makeText(LockActivity.this, "Password Update Failed.", Toast.LENGTH_LONG).show();        
+	  		        db.close();
 	  			} else {
 	  				AlertDialog alertDialog = new AlertDialog.Builder(LockActivity.this).create();
 	  				alertDialog.setTitle("Error!");
@@ -50,6 +78,17 @@ public class LockActivity extends Activity {
 	  				alertDialog.show();
 	  			}
 	  		}
+	  		
+	  	    public void CopyDB(InputStream inputStream, OutputStream outputStream) throws IOException {
+    	        //---copy 1K bytes at a time---
+    	        byte[] buffer = new byte[1024];
+    	        int length;
+    	        while ((length = inputStream.read(buffer)) > 0) {
+    	            outputStream.write(buffer, 0, length);
+    	        }
+    	        inputStream.close();
+    	        outputStream.close();
+	  	    }
 	   
 	  	});
     }
