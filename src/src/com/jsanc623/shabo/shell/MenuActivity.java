@@ -43,6 +43,7 @@ public class MenuActivity extends Activity {
 	private static String Folder = "aaShaboShell";
     @SuppressWarnings("unused")
 	private ImageView imageView;
+    public Uri mImageCaptureUri1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,7 +87,7 @@ public class MenuActivity extends Activity {
 	                	 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 	                	 String imageFileLoc = "/" + MenuActivity.Folder + "/photos/" + String.valueOf(System.currentTimeMillis()) + ".jpg";
 	                	 MenuActivity.lastImageSaved = Environment.getExternalStorageDirectory().toString() + imageFileLoc;
-	                     Uri mImageCaptureUri1 = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), imageFileLoc));
+	                     mImageCaptureUri1 = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), imageFileLoc));
 	                     cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri1);                     
 	                     cameraIntent.putExtra("return-data", true);
 	                     startActivityForResult(cameraIntent, CAMERA_REQUEST);
@@ -166,6 +167,10 @@ public class MenuActivity extends Activity {
 			finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
 			out.flush();
 			out.close();
+			DataProvider db = new DataProvider(MenuActivity.this);
+			db.open();
+			db.updateRecord(1, fileName, "", "", "");
+			db.close();
 			showDialog("New file created!", "Your image has been saved at: " + baseDirectory.toString() + "/" + MenuActivity.Folder + "/screenshots/");
 		} catch (Exception e){
 			e.printStackTrace();
@@ -173,10 +178,12 @@ public class MenuActivity extends Activity {
 	}
 	
 	public void showDialog(String title, String message){
-		 AlertDialog alertDialog = new AlertDialog.Builder(MenuActivity.this).create();
-		 alertDialog.setTitle(title);
-		 alertDialog.setMessage(message);
-		 alertDialog.show();
+		AlertDialog.Builder builder = new AlertDialog.Builder(MenuActivity.this);
+		builder.setMessage(message).setTitle(title)
+		   .setCancelable(true)
+		   .setPositiveButton("Ok", null);
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 	
 	public void showImage(String imageLocation){
@@ -189,6 +196,9 @@ public class MenuActivity extends Activity {
     
 	protected void onActivityResult(int requestCode, int resultCode, Intent data){
 	    if (requestCode == CAMERA_REQUEST){
+	    	DataProvider db = new DataProvider(MenuActivity.this);
+	    	db.updateRecord(1, mImageCaptureUri1.getPath(), "", "", "");	    	
+		    finish();
 		}
 	    
 	    if (requestCode == REQUEST_FILE){

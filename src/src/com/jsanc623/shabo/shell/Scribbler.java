@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.RelativeLayout;
 
-@SuppressWarnings("unused")
 public class Scribbler extends Activity {
     DrawView drawView;
     MenuActivity MenuActivity;
@@ -24,8 +23,9 @@ public class Scribbler extends Activity {
         setContentView(drawView);
         //drawView.requestFocus();
 	   	 
-	   	/*parent.setDrawingCacheEnabled(true);
-	   	b = parent.getDrawingCache();*/
+	   	parent.setDrawingCacheEnabled(true);
+	   	Bitmap b = parent.getDrawingCache();
+	   	MenuActivity.saveImage(b, "drawing_");
     }
     
     @Override
