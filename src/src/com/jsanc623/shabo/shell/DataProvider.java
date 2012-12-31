@@ -112,4 +112,8 @@ public class DataProvider {
         if("".equals(sound)){ args.put(KEY_SOUND, sound); }
         return db.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
     }
+
+	public String getDatabaseName() {
+		return DATABASE_NAME;
+	}
 }

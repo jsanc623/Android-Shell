@@ -17,7 +17,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db.open();
-        db.insertRecord("This is an image", "Hey! My password", "yes", "bing!");
+        db.insertRecord("default", "", "no", "default");
         db.close();
         mHandler.postDelayed(new Runnable() {
             public void run() {

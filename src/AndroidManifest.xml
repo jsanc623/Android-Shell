@@ -38,6 +38,9 @@
         <activity android:name=".FAQActivity" android:label="@string/title_activity_faq">
         </activity>
         
+        <activity android:name=".ShowWidget" android:label="@string/title_activity_showWidget">
+        </activity>
+        
         <receiver android:icon="@drawable/ic_launcher" android:label="@string/widget_label" 
             android:name="WidgetProvider" android:exported="false" >
        		<intent-filter >

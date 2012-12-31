@@ -17,7 +17,7 @@ public class Scribbler extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scribbler_main);
         
-	   	RelativeLayout parent = (RelativeLayout) findViewById(R.id.layout);
+	   	RelativeLayout parent = (RelativeLayout) findViewById(R.id.layout_widget_shabo);
 		DrawView drawView = new DrawView(this);
         drawView.setBackgroundColor(Color.WHITE);
         //parent.addView(drawView); // < causes force close waiting for focus

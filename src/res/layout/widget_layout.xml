@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout"
+    android:id="@+id/layout_widget_shabo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dip"
     android:background="@drawable/myshape" >
 
     <TextView
-        android:id="@+id/update"
+        android:id="@+id/update_widget_shabo"
         style="@android:style/TextAppearance.Medium"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

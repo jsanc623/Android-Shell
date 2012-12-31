@@ -53,7 +53,7 @@ public class LockActivity extends Activity {
 	   	   
 	  			if(password_a_value.equals(password_b_value)){
 	  				try{
-	  				    String destPath = "/data/data/" + getPackageName() + "/databases/ShaboShellDB";
+	  				    String destPath = "/data/data/" + getPackageName() + "/databases/" + db.getDatabaseName();
 	  				    File f = new File(destPath);
 	  				    if(!f.exists()){
 	  				        CopyDB(getBaseContext().getAssets().open("ShaboShellDB"), new FileOutputStream(destPath));
