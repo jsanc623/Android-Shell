@@ -37,6 +37,7 @@ public class DrawView extends View {
 	    super.onSizeChanged(w, h, oldw, oldh);
 	    mBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
 	    mCanvas = new Canvas(mBitmap);
+        //MenuActivity.saveImage(mBitmap, "drawing_");
 	}
 	
 	@Override
@@ -46,7 +47,7 @@ public class DrawView extends View {
 	}
 	
 	private float mX, mY;
-	private static final float TOUCH_TOLERANCE = 4;
+	private static final float TOUCH_TOLERANCE = 2;
 	
 	private void touch_start(float x, float y) {
 	    mPath.reset();
