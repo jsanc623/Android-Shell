@@ -26,6 +26,9 @@ public class LockActivity extends Activity {
     private Button btnSave;
     @SuppressWarnings("unused")
 	private Boolean state;    
+
+	// Create DB object
+    DataProvider db = new DataProvider(LockActivity.this);
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,19 +53,16 @@ public class LockActivity extends Activity {
 	   	   
 	  			if(password_a_value.equals(password_b_value)){
 	  				try{
-	  				    String destPath = "/data/data/" + getPackageName() + "/databases/DB";
+	  				    String destPath = "/data/data/" + getPackageName() + "/databases/ShaboShellDB";
 	  				    File f = new File(destPath);
 	  				    if(!f.exists()){
-	  				        CopyDB(getBaseContext().getAssets().open("mydb"), new FileOutputStream(destPath));
+	  				        CopyDB(getBaseContext().getAssets().open("ShaboShellDB"), new FileOutputStream(destPath));
 	  				    }
 	  				} catch (FileNotFoundException e){
 	  				    e.printStackTrace();
 	  				} catch (IOException e){
 	  				    e.printStackTrace();
 	  				}
-	  				
-	  				// Create DB object
-	  				DataProvider db = new DataProvider(LockActivity.this);
 	  				
 	  				// Update password
 	  		        db.open();
@@ -72,10 +72,12 @@ public class LockActivity extends Activity {
 	  		            Toast.makeText(LockActivity.this, "Password Update Failed.", Toast.LENGTH_LONG).show();        
 	  		        db.close();
 	  			} else {
-	  				AlertDialog alertDialog = new AlertDialog.Builder(LockActivity.this).create();
-	  				alertDialog.setTitle("Error!");
-	  				alertDialog.setMessage("Passwords do not match!");
-	  				alertDialog.show();
+	  				AlertDialog.Builder builder = new AlertDialog.Builder(LockActivity.this);
+	  				builder.setMessage("Passwords do not match!").setTitle("Error!")
+	  				   .setCancelable(true)
+	  				   .setPositiveButton("Ok", null);
+	  				AlertDialog alert = builder.create();
+	  				alert.show();
 	  			}
 	  		}
 	  		

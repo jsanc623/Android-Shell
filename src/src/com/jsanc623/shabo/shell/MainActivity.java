@@ -9,10 +9,16 @@ import android.view.Menu;
 public class MainActivity extends Activity {
     private Handler mHandler = new Handler();
 
+	// Create DB object
+    DataProvider db = new DataProvider(MainActivity.this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        db.open();
+        db.insertRecord("This is an image", "Hey! My password", "yes", "bing!");
+        db.close();
         mHandler.postDelayed(new Runnable() {
             public void run() {
             	Intent myIntent = new Intent(MainActivity.this, MenuActivity.class);
