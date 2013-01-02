@@ -93,7 +93,12 @@ public class DrawView extends View {
 	            break;
 	        case MotionEvent.ACTION_UP:
 	            touch_up();
-	    	    MenuActivity.saveImage(mBitmap, "drawing-", "Updated: ", true);
+           	 Bitmap bitmap;
+           	 View v1 = this.getRootView();
+           	 v1.setDrawingCacheEnabled(true);
+           	 bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+           	 v1.setDrawingCacheEnabled(false);
+           	 MenuActivity.saveImage(bitmap, "drawing-", "Updated: ", true);
 	            invalidate();
 	            break;
 	    }
