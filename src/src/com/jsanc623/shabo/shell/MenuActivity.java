@@ -34,6 +34,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MenuActivity extends Activity {
     private static final int CAMERA_REQUEST = 1337;
@@ -196,6 +197,7 @@ public class MenuActivity extends Activity {
     
 	protected void onActivityResult(int requestCode, int resultCode, Intent data){
 	    if (requestCode == CAMERA_REQUEST){
+	    	Toast.makeText(getApplicationContext(), "In onActivityResult()", Toast.LENGTH_LONG).show();
 	    	DataProvider db = new DataProvider(MenuActivity.this);
 	    	db.updateRecord(1, mImageCaptureUri1.getPath(), "", "", "");	    	
 		    finish();
@@ -203,8 +205,8 @@ public class MenuActivity extends Activity {
 	    
 	    if (requestCode == REQUEST_FILE){
 	    	if (resultCode == Activity.RESULT_OK) {
-                @SuppressWarnings("unused")
 				String filePath = data.getStringExtra(FileDialog.RESULT_PATH);
+                Toast.makeText(getApplicationContext(), "filePathReturn: " + filePath, Toast.LENGTH_LONG).show();
 	    	}
         }
 	}    

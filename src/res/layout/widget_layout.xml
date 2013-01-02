@@ -3,8 +3,8 @@
     android:id="@+id/layout_widget_shabo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="8dip"
-    android:background="@drawable/myshape" >
+    android:layout_margin="4dip"
+    android:background="@drawable/widget_default" >
 
     <Button
         android:id="@+id/widget_button"

@@ -167,6 +167,7 @@ public final class R {
         public static final int picture=0x7f02000b;
         public static final int pictures=0x7f02000c;
         public static final int sound=0x7f02000d;
+        public static final int widget_default=0x7f02000e;
     }
     public static final class id {
         public static final int app_faq=0x7f090011;
