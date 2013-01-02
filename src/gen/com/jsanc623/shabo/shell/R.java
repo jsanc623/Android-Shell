@@ -174,7 +174,7 @@ public final class R {
         public static final int app_lock=0x7f09000e;
         public static final int app_paint=0x7f090010;
         public static final int app_sound=0x7f09000f;
-        public static final int btnSave=0x7f090007;
+        public static final int btnSave=0x7f090006;
         public static final int button1=0x7f090020;
         public static final int faq_text=0x7f090000;
         public static final int fdButtonCancel=0x7f09001a;
@@ -194,17 +194,17 @@ public final class R {
         public static final int mainActivityWelcomeText=0x7f090008;
         public static final int menu_settings=0x7f090023;
         public static final int my_files=0x7f09000d;
-        public static final int password_a=0x7f090003;
-        public static final int password_a_input=0x7f090004;
-        public static final int password_b=0x7f090005;
-        public static final int password_b_input=0x7f090006;
+        public static final int password_a=0x7f090002;
+        public static final int password_a_input=0x7f090003;
+        public static final int password_b=0x7f090004;
+        public static final int password_b_input=0x7f090005;
         public static final int path=0x7f09001c;
         public static final int relativeLayout01=0x7f090012;
         public static final int screen_capture=0x7f09000c;
         public static final int take_picture=0x7f09000b;
+        public static final int textView1=0x7f090007;
         public static final int textViewFilename=0x7f090018;
-        public static final int toggleButton=0x7f090001;
-        public static final int toggleText=0x7f090002;
+        public static final int toggleText=0x7f090001;
         public static final int widget_button=0x7f090022;
     }
     public static final class layout {
@@ -232,35 +232,36 @@ public final class R {
         public static final int app_paint=0x7f06000d;
         public static final int app_sound=0x7f06000c;
         public static final int btn_save=0x7f060014;
-        public static final int cancel=0x7f060022;
-        public static final int cant_read_folder=0x7f06001e;
-        public static final int create=0x7f060023;
-        public static final int err=0x7f060025;
+        public static final int cancel=0x7f060023;
+        public static final int cant_read_folder=0x7f06001f;
+        public static final int create=0x7f060024;
+        public static final int err=0x7f060026;
         /**  activity_faq 
          */
-        public static final int faq_text=0x7f060026;
-        public static final int file_name=0x7f060021;
+        public static final int faq_text=0x7f060027;
+        public static final int file_name=0x7f060022;
         /**  activity_about 
          */
-        public static final int links=0x7f060015;
-        public static final int links_capture_icon=0x7f060017;
-        public static final int links_lock_icon=0x7f060018;
-        public static final int links_picture_icon=0x7f060016;
+        public static final int links=0x7f060016;
+        public static final int links_capture_icon=0x7f060018;
+        public static final int links_lock_icon=0x7f060019;
+        public static final int links_picture_icon=0x7f060017;
         public static final int loading=0x7f060006;
-        public static final int location=0x7f06001d;
+        public static final int location=0x7f06001e;
         public static final int menu_settings=0x7f060001;
         public static final int my_files=0x7f060008;
-        public static final int nnew=0x7f06001f;
-        public static final int no_data=0x7f060024;
+        public static final int nnew=0x7f060020;
+        public static final int no_data=0x7f060025;
+        public static final int no_password_help=0x7f060015;
         public static final int password_a=0x7f060010;
         public static final int password_b=0x7f060011;
         public static final int screen_capture=0x7f06000a;
-        public static final int select=0x7f060020;
+        public static final int select=0x7f060021;
         public static final int set_button=0x7f060012;
         public static final int take_picture=0x7f060009;
         /**   activity_faq 
          */
-        public static final int title_activity_faq=0x7f06001a;
+        public static final int title_activity_faq=0x7f06001b;
         /**  activity_lock 
          */
         public static final int title_activity_lock=0x7f06000f;
@@ -275,13 +276,13 @@ public final class R {
         public static final int title_activity_menu=0x7f060007;
         /**   title_activity_showWidget 
          */
-        public static final int title_activity_showWidget=0x7f06001b;
+        public static final int title_activity_showWidget=0x7f06001c;
         /**   activity_file_dialog 
          */
-        public static final int title_file_dialog=0x7f06001c;
+        public static final int title_file_dialog=0x7f06001d;
         /**   activity_scribbler 
          */
-        public static final int title_scribbler=0x7f060019;
+        public static final int title_scribbler=0x7f06001a;
         public static final int toggle=0x7f060013;
         public static final int welcome_text=0x7f060005;
         /**  ############ 

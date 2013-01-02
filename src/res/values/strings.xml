@@ -37,7 +37,8 @@
 	<string name="password_b">Repeat Password</string>
     <string name="set_button">Set Password</string>
     <string name="toggle">Require Password</string>
-    <string name="btn_save">Button Save</string>
+    <string name="btn_save">Save Password</string>
+    <string name="no_password_help">To reset password, save blank.</string>
 	
 	<!-- activity_about -->
 	<string name="links">Created with help from:</string>

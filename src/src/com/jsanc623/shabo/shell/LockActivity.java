@@ -13,12 +13,12 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.widget.ToggleButton;
+//import android.widget.ToggleButton;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 public class LockActivity extends Activity {
-    private ToggleButton toggleButton;
+    //private ToggleButton toggleButton;
     private String password_a_value;
     private String password_b_value;
     private EditText password_a;
@@ -38,14 +38,14 @@ public class LockActivity extends Activity {
     }
     
     public void addListenerOnButton() {
-    	toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
+    	//toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
     	btnSave = (Button) findViewById(R.id.btnSave);
    
     	btnSave.setOnClickListener(new OnClickListener() {
    
 	  		@Override
 	  		public void onClick(View v) {
-	  			state = toggleButton.isChecked();
+	  			//state = toggleButton.isChecked();
 	  			password_a = (EditText)findViewById(R.id.password_a_input);
 	  			password_a_value = password_a.getText().toString();
 	  			password_b = (EditText)findViewById(R.id.password_b_input);

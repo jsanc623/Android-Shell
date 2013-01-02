@@ -2,24 +2,28 @@ package com.jsanc623.shabo.shell;
 
 
 /*
-To get al installed apps you can use Package Manager..
+To get all installed applications you can use Package Manager..
 
-    List<PackageInfo> apps = getPackageManager().getInstalledPackages(0);
+    List<PackageInfo> applications = getPackageManager().getInstalledPackages(0);
 To run you can use package name
 
 Intent LaunchApp = getPackageManager().getLaunchIntentForPackage(“package name”)
 startActivity( LaunchApp );
-For more detail you can read this blog 
+For more detail you can read this 
 http://blog.wisecells.com/2012/05/30/get-list-of-all-installed-apps-android/
 */
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 //import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -39,7 +43,6 @@ import android.widget.Toast;
 public class MenuActivity extends Activity {
     private static final int CAMERA_REQUEST = 1337;
     private static final int REQUEST_FILE = 1338;
-	@SuppressWarnings("unused")
 	private static String lastImageSaved = "";
 	private static String Folder = "aaShaboShell";
     @SuppressWarnings("unused")
@@ -85,13 +88,37 @@ public class MenuActivity extends Activity {
 	    public void onClick(final View v) {
 	             switch(v.getId()){
 	                 case R.id.take_picture: {
-	                	 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 	                	 String imageFileLoc = "/" + MenuActivity.Folder + "/photos/" + String.valueOf(System.currentTimeMillis()) + ".jpg";
 	                	 MenuActivity.lastImageSaved = Environment.getExternalStorageDirectory().toString() + imageFileLoc;
-	                     mImageCaptureUri1 = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), imageFileLoc));
-	                     cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mImageCaptureUri1);                     
-	                     cameraIntent.putExtra("return-data", true);
-	                     startActivityForResult(cameraIntent, CAMERA_REQUEST);
+	                	 
+	                	 File picLoc = new File(MenuActivity.lastImageSaved);
+	                	 
+	                	 try{
+		                	 if(picLoc.exists() == false) {
+		                		 picLoc.getParentFile().mkdirs();
+		                		 picLoc.createNewFile();
+		                     }
+		                 } catch (IOException e) {
+		                	 Toast.makeText(getApplicationContext(), "No file create", Toast.LENGTH_LONG).show();
+		                     Log.e("ShaboShellExp", "Could not create file.", e);
+		                 }
+	                     
+	                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+	                     if (hasImageCaptureBug()) {
+	                    	 cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.getExternalStorageDirectory(), imageFileLoc)));
+	                     } else {
+	                    	 cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+	                     }
+	                    
+	                     // debug
+	                     Toast.makeText(getApplicationContext(), imageFileLoc, Toast.LENGTH_LONG).show();
+	                     
+	                     try{
+	                    	 cameraIntent.putExtra("return-data", true);
+		                     startActivityForResult(cameraIntent, CAMERA_REQUEST);
+	                     } catch (ActivityNotFoundException e) {
+	                    	 e.printStackTrace();
+	                     }
 	                 } break;
 	                 case R.id.screen_capture: {
 	                	 if(Build.VERSION.SDK_INT >= 14){
@@ -198,8 +225,25 @@ public class MenuActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data){
 	    if (requestCode == CAMERA_REQUEST){
 	    	Toast.makeText(getApplicationContext(), "In onActivityResult()", Toast.LENGTH_LONG).show();
+	    	
+	    	@SuppressWarnings("unused")
+	    	Uri u;
+            if (hasImageCaptureBug()) {
+                File fi = new File(MenuActivity.lastImageSaved);
+                try {
+                    u = Uri.parse(android.provider.MediaStore.Images.Media.insertImage(getContentResolver(), fi.getAbsolutePath(), null, null));
+                    if (!fi.delete()) {
+                        Log.i("logMarker", "Failed to delete " + fi);
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else {
+               u = data.getData();
+            }
+	    	
 	    	DataProvider db = new DataProvider(MenuActivity.this);
-	    	db.updateRecord(1, mImageCaptureUri1.getPath(), "", "", "");	    	
+	    	db.updateRecord(1, data.getData().toString(), "", "", "");	    	
 		    finish();
 		}
 	    
@@ -210,6 +254,20 @@ public class MenuActivity extends Activity {
 	    	}
         }
 	}    
+	
+	public boolean hasImageCaptureBug() {
+	    // list of known devices that have the bug
+	    ArrayList<String> devices = new ArrayList<String>();
+	    devices.add("android-devphone1/dream_devphone/dream");
+	    devices.add("generic/sdk/generic");
+	    devices.add("vodafone/vfpioneer/sapphire");
+	    devices.add("tmobile/kila/dream");
+	    devices.add("verizon/voles/sholes");
+	    devices.add("google_ion/google_ion/sapphire");
+
+	    return devices.contains(android.os.Build.BRAND + "/" + android.os.Build.PRODUCT + "/"
+	            + android.os.Build.DEVICE);
+	}
 	
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
