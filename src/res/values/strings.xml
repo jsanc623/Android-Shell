@@ -53,7 +53,7 @@
 	<string name="title_activity_faq">Shell FAQ</string>
 	
 	<!--  title_activity_showWidget -->
-	<string name="title_activity_showWidget">Shell Widget View</string>
+	<string name="title_activity_showWidget">Shell Viewer</string>
 	
 	<!--  activity_file_dialog -->
 	<string name="title_file_dialog">Shell File Picker</string>

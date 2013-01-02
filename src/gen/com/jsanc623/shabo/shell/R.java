@@ -190,10 +190,11 @@ public final class R {
         public static final int fdrowtext=0x7f09001e;
         public static final int layout_widget_shabo=0x7f090022;
         public static final int linearLayout=0x7f09001f;
+        public static final int listView1=0x7f090024;
         public static final int mainActivityLoadingTextView=0x7f090009;
         public static final int mainActivityProgressLoadBar=0x7f09000a;
         public static final int mainActivityWelcomeText=0x7f090008;
-        public static final int menu_settings=0x7f090024;
+        public static final int menu_settings=0x7f090025;
         public static final int my_files=0x7f09000d;
         public static final int password_a=0x7f090002;
         public static final int password_a_input=0x7f090003;

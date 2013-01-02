@@ -45,6 +45,7 @@ import android.widget.Toast;
 public class MenuActivity extends Activity {
     private static final int CAMERA_REQUEST = 1337;
     private static final int REQUEST_FILE = 1338;
+    private static final int REQUEST_SONG = 1339;
 	private static String lastImageSaved = "";
 	private static String imageFileLoc;
 	private static String imageTmpLoc;
@@ -213,9 +214,10 @@ public class MenuActivity extends Activity {
      	//alternatively you can set file filter
      	if(setOnlyMP3 == true){
      	    intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "mp3" });
+     	    startActivityForResult(intent, REQUEST_SONG);
+     	} else {
+     		startActivityForResult(intent, REQUEST_FILE);
      	}
-     	
-     	startActivityForResult(intent, REQUEST_FILE);
 	}
 	
 	public void saveImage(Bitmap finalBitmap, String filepreFix, String toast, Boolean updateLastFile){
@@ -278,37 +280,30 @@ public class MenuActivity extends Activity {
 	}
     
 	protected void onActivityResult(int requestCode, int resultCode, Intent data){
-	    //Toast.makeText(getApplicationContext(), String.valueOf(requestCode) + " " + String.valueOf(resultCode), Toast.LENGTH_SHORT).show();
 	    if (requestCode == CAMERA_REQUEST){
-	    	//Toast.makeText(getApplicationContext(), "In onActivityResult()", Toast.LENGTH_LONG).show();
-	    	
-	    	/*Uri u;
-            if (hasImageCaptureBug()) {
-                File fi = new File(MenuActivity.lastImageSaved);
-                try {
-                    u = Uri.parse(android.provider.MediaStore.Images.Media.insertImage(getContentResolver(), fi.getAbsolutePath(), null, null));
-                    if (!fi.delete()) {
-                        Log.i("logMarker", "Failed to delete " + fi);
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            } else {
-               u = data.getData();
-            }*/
-	    	
 	    	Bitmap thumbnail = (Bitmap) data.getExtras().get("data");  
 	    	saveImage(thumbnail, "photo-", "", false);
-	    	
-	    	//DataProvider db = new DataProvider(MenuActivity.this);
-	    	//db.updateRecord(1, data.getData().toString(), "", "", "");	    	
-		    //finish();
 		}
 	    
 	    if (requestCode == REQUEST_FILE){
 	    	if (resultCode == Activity.RESULT_OK) {
 				String filePath = data.getStringExtra(FileDialog.RESULT_PATH);
                 Toast.makeText(getApplicationContext(), "filePathReturn: " + filePath, Toast.LENGTH_LONG).show();
+    			DataProvider db = new DataProvider(MenuActivity.this);
+    			db.open();
+    			//db.updateRecord(1, fileName, "", "", "");
+    			db.close();
+	    	}
+        }
+	    
+	    if (requestCode == REQUEST_SONG){
+	    	if (resultCode == Activity.RESULT_OK) {
+				String filePath = data.getStringExtra(FileDialog.RESULT_PATH);
+                Toast.makeText(getApplicationContext(), "filePathReturn: " + filePath, Toast.LENGTH_LONG).show();
+    			DataProvider db = new DataProvider(MenuActivity.this);
+    			db.open();
+    			db.updateRecord(1, "", "", "", filePath);
+    			db.close();
 	    	}
         }
 	}    
