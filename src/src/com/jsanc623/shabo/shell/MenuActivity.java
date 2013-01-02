@@ -31,6 +31,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 //import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
@@ -40,12 +41,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+@SuppressWarnings("unused")
 public class MenuActivity extends Activity {
     private static final int CAMERA_REQUEST = 1337;
     private static final int REQUEST_FILE = 1338;
 	private static String lastImageSaved = "";
+	private static String imageFileLoc;
+	private static String imageTmpLoc;
 	private static String Folder = "aaShaboShell";
-    @SuppressWarnings("unused")
 	private ImageView imageView;
     public Uri mImageCaptureUri1;
 
@@ -88,10 +91,48 @@ public class MenuActivity extends Activity {
 	    public void onClick(final View v) {
 	             switch(v.getId()){
 	                 case R.id.take_picture: {
-	                	 String imageFileLoc = "/" + MenuActivity.Folder + "/photos/" + String.valueOf(System.currentTimeMillis()) + ".jpg";
-	                	 MenuActivity.lastImageSaved = Environment.getExternalStorageDirectory().toString() + imageFileLoc;
+	                	 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE); 
+	                	 startActivityForResult(cameraIntent, CAMERA_REQUEST);  
 	                	 
-	                	 File picLoc = new File(MenuActivity.lastImageSaved);
+	                	 /*String storageState = Environment.getExternalStorageState();
+	                     if(storageState.equals(Environment.MEDIA_MOUNTED)) {
+		                	 String imageName = String.valueOf(System.currentTimeMillis()) + ".jpg";
+		                	 MenuActivity.imageFileLoc = Environment.getExternalStorageDirectory().toString() + "/" + MenuActivity.Folder + "/photos/" + imageName;
+		                	 MenuActivity.lastImageSaved = MenuActivity.imageFileLoc;
+		                	 MenuActivity.imageTmpLoc = Environment.getExternalStorageDirectory().getPath() + "/" + imageName;
+	                         String path = MenuActivity.imageFileLoc;
+	                         File _photoFile = new File(MenuActivity.imageTmpLoc);
+	                         try {
+	                             if(_photoFile.exists() == false) {
+	                                 _photoFile.getParentFile().mkdirs();
+	                                 _photoFile.createNewFile();
+	                             }
+	                         } catch (IOException e) { }
+
+	                         Uri _fileUri = Uri.fromFile(_photoFile);
+	                         try{
+		                         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+		                         
+			                     //intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+			                     
+		                         intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, _fileUri);
+		                    	 intent.putExtra("return-data", true);
+		                    	 //Toast.makeText(getApplicationContext(), "Opening intent - " + _fileUri.toString(), Toast.LENGTH_LONG).show();
+		                         startActivityForResult(intent, CAMERA_REQUEST);
+		                     }
+		                     catch(ActivityNotFoundException e){
+		                         //e.printStackTrace();
+		                     }
+	                     }   else {
+	                         new AlertDialog.Builder(MenuActivity.this)
+	                         .setMessage("External Storage (SD Card) is required.\n\nCurrent state: " + storageState)
+	                         .setCancelable(true).create().show();
+	                     }*/
+	                	 
+	                	 
+	                	 /*Toast.makeText(getApplicationContext(), MenuActivity.imageTmpLoc, Toast.LENGTH_LONG).show();
+	                	 
+	                	 File picLoc = new File(MenuActivity.imageTmpLoc);
 	                	 
 	                	 try{
 		                	 if(picLoc.exists() == false) {
@@ -105,20 +146,21 @@ public class MenuActivity extends Activity {
 	                     
 	                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 	                     if (hasImageCaptureBug()) {
-	                    	 cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Environment.getExternalStorageDirectory(), imageFileLoc)));
+	                    	 cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(MenuActivity.imageTmpLoc)));
 	                     } else {
 	                    	 cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 	                     }
 	                    
 	                     // debug
-	                     Toast.makeText(getApplicationContext(), imageFileLoc, Toast.LENGTH_LONG).show();
+	                     Toast.makeText(getApplicationContext(), MenuActivity.imageTmpLoc, Toast.LENGTH_LONG).show();
 	                     
 	                     try{
 	                    	 cameraIntent.putExtra("return-data", true);
 		                     startActivityForResult(cameraIntent, CAMERA_REQUEST);
 	                     } catch (ActivityNotFoundException e) {
 	                    	 e.printStackTrace();
-	                     }
+	                     }*/
+	                     
 	                 } break;
 	                 case R.id.screen_capture: {
 	                	 if(Build.VERSION.SDK_INT >= 14){
@@ -127,7 +169,7 @@ public class MenuActivity extends Activity {
 		                	 v1.setDrawingCacheEnabled(true);
 		                	 bitmap = Bitmap.createBitmap(v1.getDrawingCache());
 		                	 v1.setDrawingCacheEnabled(false);
-		                	 saveImage(bitmap, "Screenshot");
+		                	 saveImage(bitmap, "screenshot-");
 	                	 } else {
 	                		 showDialog("Function not supported", "This function requires Android 4.0 (SDK 14) and up. Your version is Android " + Build.VERSION.RELEASE + " (SDK " + Build.VERSION.SDK_INT + ")");
 	                	 }
@@ -223,11 +265,11 @@ public class MenuActivity extends Activity {
 	}
     
 	protected void onActivityResult(int requestCode, int resultCode, Intent data){
+	    //Toast.makeText(getApplicationContext(), String.valueOf(requestCode) + " " + String.valueOf(resultCode), Toast.LENGTH_SHORT).show();
 	    if (requestCode == CAMERA_REQUEST){
-	    	Toast.makeText(getApplicationContext(), "In onActivityResult()", Toast.LENGTH_LONG).show();
+	    	//Toast.makeText(getApplicationContext(), "In onActivityResult()", Toast.LENGTH_LONG).show();
 	    	
-	    	@SuppressWarnings("unused")
-	    	Uri u;
+	    	/*Uri u;
             if (hasImageCaptureBug()) {
                 File fi = new File(MenuActivity.lastImageSaved);
                 try {
@@ -240,11 +282,14 @@ public class MenuActivity extends Activity {
                 }
             } else {
                u = data.getData();
-            }
+            }*/
 	    	
-	    	DataProvider db = new DataProvider(MenuActivity.this);
-	    	db.updateRecord(1, data.getData().toString(), "", "", "");	    	
-		    finish();
+	    	Bitmap thumbnail = (Bitmap) data.getExtras().get("data");  
+	    	saveImage(thumbnail, "photo-");
+	    	
+	    	//DataProvider db = new DataProvider(MenuActivity.this);
+	    	//db.updateRecord(1, data.getData().toString(), "", "", "");	    	
+		    //finish();
 		}
 	    
 	    if (requestCode == REQUEST_FILE){
