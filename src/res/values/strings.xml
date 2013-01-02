@@ -10,7 +10,7 @@
     <!-- Widget  Text -->
     <!-- ############ -->
     <string name="widget_label">Shell Widget</string>
-    <string name="widget_primary">Hello!</string>
+    <string name="widget_primary">I\'m a button!</string>
     
     <!-- ################ -->
     <!-- Application text -->
