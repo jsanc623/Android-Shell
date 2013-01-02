@@ -1,5 +1,6 @@
 package com.jsanc623.shabo.shell;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -8,13 +9,16 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.view.MotionEvent;
 import android.view.View;
+//import android.widget.Toast;
 
+@SuppressLint("DrawAllocation")
 public class DrawView extends View {
 	private Bitmap  mBitmap;
 	private Canvas  mCanvas;
 	private Path    mPath;
 	private Paint   mBitmapPaint;
 	private Paint   mPaint;
+	private MenuActivity MenuActivity = new MenuActivity();
 	
 	public DrawView(Context c) {
 	    super(c);
@@ -43,6 +47,7 @@ public class DrawView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 	    canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
+	    
 	    canvas.drawPath(mPath, mPaint);
 	}
 	
@@ -88,6 +93,7 @@ public class DrawView extends View {
 	            break;
 	        case MotionEvent.ACTION_UP:
 	            touch_up();
+	    	    MenuActivity.saveImage(mBitmap, "drawing-", "Updated: ", true);
 	            invalidate();
 	            break;
 	    }

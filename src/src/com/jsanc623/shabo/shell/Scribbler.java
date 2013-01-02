@@ -2,8 +2,12 @@ package com.jsanc623.shabo.shell;
 
 import android.app.Activity;
 import android.graphics.Color;
+//import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+@SuppressWarnings("unused")
 public class Scribbler extends Activity {
     DrawView drawView;
     MenuActivity MenuActivity;

@@ -49,6 +49,7 @@ public class MenuActivity extends Activity {
 	private static String imageFileLoc;
 	private static String imageTmpLoc;
 	private static String Folder = "aaShaboShell";
+	private static int lastN;
 	private ImageView imageView;
     public Uri mImageCaptureUri1;
 
@@ -169,7 +170,7 @@ public class MenuActivity extends Activity {
 		                	 v1.setDrawingCacheEnabled(true);
 		                	 bitmap = Bitmap.createBitmap(v1.getDrawingCache());
 		                	 v1.setDrawingCacheEnabled(false);
-		                	 saveImage(bitmap, "screenshot-");
+		                	 saveImage(bitmap, "screenshot-", "", false);
 	                	 } else {
 	                		 showDialog("Function not supported", "This function requires Android 4.0 (SDK 14) and up. Your version is Android " + Build.VERSION.RELEASE + " (SDK " + Build.VERSION.SDK_INT + ")");
 	                	 }
@@ -185,6 +186,7 @@ public class MenuActivity extends Activity {
 	                	openFileDialog(false, true, "/Music");
 	                 } break;
 	                 case R.id.app_paint: {
+	                 	lastN = 0;
 	                 	Intent scribblerIntent = new Intent(MenuActivity.this, Scribbler.class);
 	                	MenuActivity.this.startActivity(scribblerIntent);
 	                 } break;
@@ -216,7 +218,7 @@ public class MenuActivity extends Activity {
      	startActivityForResult(intent, REQUEST_FILE);
 	}
 	
-	public void saveImage(Bitmap finalBitmap, String filepreFix){
+	public void saveImage(Bitmap finalBitmap, String filepreFix, String toast, Boolean updateLastFile){
 		File baseDirectory = Environment.getExternalStorageDirectory();
 		File directory = new File(baseDirectory, "/" + MenuActivity.Folder + "/screenshots/");
 	    if (!directory.exists()) {
@@ -228,7 +230,18 @@ public class MenuActivity extends Activity {
 		Random generator = new Random();
 		int n = 10000;
 		n = generator.nextInt(n);
+		
+		if(updateLastFile.equals(true) && lastN > 0){
+			n = lastN;
+		}
+		lastN = n;
+		
 		String fileName = filepreFix + "-" + n + ".jpg";
+		
+		if(!"".equalsIgnoreCase(toast)){
+			Log.v("ShaboLogVerb", toast + " " + fileName);
+		}
+		
 		File file = new File(directory, fileName);
 		MenuActivity.lastImageSaved = file.toString();
 		if(file.exists()) file.delete();
@@ -285,7 +298,7 @@ public class MenuActivity extends Activity {
             }*/
 	    	
 	    	Bitmap thumbnail = (Bitmap) data.getExtras().get("data");  
-	    	saveImage(thumbnail, "photo-");
+	    	saveImage(thumbnail, "photo-", "", false);
 	    	
 	    	//DataProvider db = new DataProvider(MenuActivity.this);
 	    	//db.updateRecord(1, data.getData().toString(), "", "", "");	    	

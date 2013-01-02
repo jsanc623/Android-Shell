@@ -176,6 +176,7 @@ public final class R {
         public static final int app_sound=0x7f09000f;
         public static final int btnSave=0x7f090006;
         public static final int button1=0x7f090020;
+        public static final int drawView=0x7f090021;
         public static final int faq_text=0x7f090000;
         public static final int fdButtonCancel=0x7f09001a;
         public static final int fdButtonCreate=0x7f09001b;
@@ -187,12 +188,12 @@ public final class R {
         public static final int fdLinearLayoutSelect=0x7f090014;
         public static final int fdrowimage=0x7f09001d;
         public static final int fdrowtext=0x7f09001e;
-        public static final int layout_widget_shabo=0x7f090021;
+        public static final int layout_widget_shabo=0x7f090022;
         public static final int linearLayout=0x7f09001f;
         public static final int mainActivityLoadingTextView=0x7f090009;
         public static final int mainActivityProgressLoadBar=0x7f09000a;
         public static final int mainActivityWelcomeText=0x7f090008;
-        public static final int menu_settings=0x7f090023;
+        public static final int menu_settings=0x7f090024;
         public static final int my_files=0x7f09000d;
         public static final int password_a=0x7f090002;
         public static final int password_a_input=0x7f090003;
@@ -205,7 +206,7 @@ public final class R {
         public static final int textView1=0x7f090007;
         public static final int textViewFilename=0x7f090018;
         public static final int toggleText=0x7f090001;
-        public static final int widget_button=0x7f090022;
+        public static final int widget_button=0x7f090023;
     }
     public static final class layout {
         public static final int activity_faq=0x7f030000;
