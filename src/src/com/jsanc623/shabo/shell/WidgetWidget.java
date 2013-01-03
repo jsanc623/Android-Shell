@@ -33,6 +33,7 @@ public class WidgetWidget extends AppWidgetProvider {
 	public void onReceive(Context context, Intent intent) {
 		// v1.5 fix that doesn't call onDelete Action
 		final String action = intent.getAction();
+		
 		if (AppWidgetManager.ACTION_APPWIDGET_DELETED.equals(action)) {
 			final int appWidgetId = intent.getExtras().getInt(
 					AppWidgetManager.EXTRA_APPWIDGET_ID,
